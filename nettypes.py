@@ -2,7 +2,7 @@ from struct import unpack
 import socket
 
 def MacAddr(byteString):
-    return ':'.join('{:02x}'.format(piece) for piece in byteString)
+    return ':'.join('{:02x}'.format(piece) for piece in byteString).upper()
 
 class EtherFrame:
     length = 14
@@ -12,3 +12,10 @@ class EtherFrame:
         self.dst = MacAddr(data[0:6])
         self.src = MacAddr(data[6:12])
         self.bucket = data[self.length:]
+
+    def __str__(self):
+        return """
+            Source:      {src}
+            Destination: {dst}
+            Protocol:    {protocol}
+        """.format(**self.__dict__)

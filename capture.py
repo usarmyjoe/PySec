@@ -3,13 +3,17 @@ import socket
 import binascii
 from struct import pack
 import time
+from nettypes import EtherFrame
 
 def main():
     conn = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
     pcap = PCAPFile('./capture.pcap')
     while True:
-        rawData, addr = conn.recvfrom(65500)
-        pcap.write(rawData)
+        rawData, addr = conn.recvfrom(65535)
+        ethFrame = EtherFrame(rawData)
+        print(ethFrame)
+        #Uncomment for writing to a file
+        #pcap.write(rawData)
     pcap.close
 
 
